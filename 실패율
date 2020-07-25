@@ -1,0 +1,17 @@
+from collections import Counter
+
+
+def solution(N, stages):
+    answer = []
+    dicts= {}
+    stagDict = Counter(stages)
+    playernum = len(stages)
+    for i in range(1, N+1):
+        if playernum != 0:
+            dicts[i] = stagDict[i]/playernum
+        else:
+            dicts[i] = 0
+        playernum = playernum - stagDict[i]
+    for j in sorted(dicts.items(), key=lambda x:x[1], reverse=True):
+        answer.append(j[0])
+    return answer
