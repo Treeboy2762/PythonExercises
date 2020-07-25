@@ -1,0 +1,79 @@
+#1 크레인 인형뽑기 게임
+def solution(board, moves):
+    answer = 0
+    baguni = [] #빈 바구니
+    for i in moves: 
+        for j in board: 
+            if (j[i-1] != 0): #board[0] 부터 시작해서 board[i]의 자리가 0이 아닌지 확인
+                baguni.append(j[i-1]) #바구니에 인형 투하
+                j[i-1] = 0 #해당 자리는 비움
+                break #다음 move로
+    return calculate (baguni, 0) #바구니를 다 채운 뒤 점수 계산
+def calculate(baguni, total):
+    for i in range(1, baguni.__len__()): #바구니[1]부터 for 루프
+        if i < baguni.__len__() and baguni[i-1] == baguni[i]: #baguni[i], baguni[i-1]의 값이 같은지 확인
+            del baguni[i-1] #겹치는 원소 제거
+            del baguni[i-1] #겹치는 원소 제거
+            return calculate(baguni, total + 2) #점수에 2를 더하고 수정된 바구니를 recursion function 방식으로 계산
+    return total
+
+#2 완주하지 못한 선수
+import collections
+
+def solution(participant, completion):
+    completion = sorted(completion) #completion 오름차순으로 정리
+    for num, name in enumerate(sorted(participant)[0:len(participant)-1]): #participant 리스트를 오름차순으로 정리한 뒤 enumerate 함수를 사용해 for 루프 진입
+        if name != completion[num]: #participant[num] 과 completion[num]이 같지 않다면
+            return name #participant[num]은 완주해지 못했다는 뜻이므로 return
+    return (sorted(participant)[len(participant)-1]) #혹은 정리된 participant list의 마지막 값 return
+
+#4 K번째 수
+
+def solution(array, commands):
+    answer = []
+    for i in commands:
+        answer.append(sorted(array[i[0]-1:i[1]])[i[2]-1]) #array를 i[0]-1부터 i[1]까지 자른 후 정렬한 뒤 i[2]-1에 위치한 값을 answer에 기입
+    return answer
+
+#5 2016년
+
+def solution(a, b):
+    answer = ''
+    count = 0 
+    #a개월까지의 날을 더해주는 구문
+    for i in range (1,a): #1월부터 a월까지 (1월일시 패스)
+        if i in [1, 3, 5, 7, 8, 10, 12]: #만약 1,3,5,7,8,10,12월 중 하나라면
+            count = count + 31 #31일을 더함
+        elif i in [4, 6, 9, 11]: #4,6,9,11 중 하나라면
+            count = count + 30 #30일을 더함
+        elif i == 2:
+            count = count + 29 #2월이면 29일을 더함
+    count = count + b #날을 더해서 총 day의 카운트를 구함
+    count = (count-1)%7 #1을 뺀 뒤 (1월 1일은 금요일 당일) 7로 나눈 나머지를 구함
+    if count == 0:
+        answer = 'FRI'
+    elif count == 1:
+        answer = 'SAT'
+    elif count == 2:
+        answer = 'SUN'
+    elif count == 3:
+        answer = 'MON'
+    elif count == 4:
+        answer = 'TUE'
+    elif count == 5:
+        answer = 'WED'
+    elif count == 6:
+        answer = 'THU'
+    else:
+        answer = "FRI"
+    return answer
+
+#6 가운데 글자 가져오기
+
+def solution(s):
+    answer = ''
+    length = len(s) #s의 길이를 구함
+    if length % 2 == 1: #길이가 홀수라면
+        return s[int((length/2-0.5)):int((length/2+0.5))] #중간을 기준으로 앞뒤로 0.5를 더해 가운데 글자를 return
+    else: #짝수라면
+        return s[int(length/2-1):int(length/2+1)] #중간을 기준으로 앞과 뒤의 글자를 잘라서 return
